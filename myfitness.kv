@@ -1,0 +1,578 @@
+<WindowManager>:
+    canvas.before:
+        Rectangle:
+            source: 'dark.jpg'
+            pos: self.pos
+            size: self.size
+    LoginWindow:
+    RegisterWindow:
+    TrainerNavWindow:
+    TraineeNavWindow:
+
+<LoginWindow>:
+    name: "login"
+    username: username
+    password: password
+
+    MDLabel:
+        text: "Welcome"
+        font_size: "48dp"
+        halign: "center"
+        color: "#FF5623"
+        pos_hint: {'center_y': .8}
+
+    MDTextField:
+        id: username
+        hint_text: "Username"
+        icon_right: 'account'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .65}
+        write_tab: False
+
+    MDTextField:
+        id: password
+        hint_text: "Password"
+        password: True
+        icon_right: 'eye-off'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        write_tab: False
+
+
+    BoxLayout:
+        size_hint: .85, None
+        height: "30dp"
+        pos_hint: {'center_x': .5, 'center_y': .4}
+        spacing: "5dp"
+
+        MDCheckbox:
+            id: cb
+            size_hint: None, None
+            width: "30dp"
+            height: "30dp"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_press:
+                password.password = False if password.password == True else True
+
+
+        MDLabel:
+            text: "[ref=Show Password]Show Password[/ref]"
+            markup: True
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_ref_press:
+                cb.active = False if cb.active == True else True
+                password.password = False if password.password == True else True
+
+    BoxLayout:
+        size_hint: .6, None
+        height: "30dp"
+        pos_hint: {'center_x': .5, 'center_y': .3}
+        spacing: "15dp"
+        MDFlatButton:
+            text: "SIGN IN"
+            size_hint_x: 1
+            md_bg_color: "#FF5623"
+            on_release:
+                root.login_user()
+                root.clear_text_fields()
+
+        MDFlatButton:
+            text: "REGISTER"
+            size_hint_x: 1
+            md_bg_color: "#FF5623"
+            on_release:
+                app.root.current = "register"
+                root.manager.transition.direction = "left"
+
+
+<RegisterWindow>:
+    name: "register"
+    firstname: firstname
+    lastname: lastname
+    username: username
+    password: password
+    role: role
+
+    MDLabel:
+        text: "User Registration"
+        font_size: "48dp"
+        halign: "center"
+        color: "#FF5623"
+        pos_hint: {'center_y': .8}
+
+    MDTextField:
+        id: firstname
+        hint_text: "First name"
+        icon_right: 'account'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .65}
+        write_tab: False
+
+    MDTextField:
+        id: lastname
+        hint_text: "Last name"
+        icon_right: 'account'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .55}
+        write_tab: False
+
+    MDTextField:
+        id: username
+        hint_text: "Username"
+        icon_right: 'email'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .45}
+        write_tab: False
+
+    MDTextField:
+        id: password
+        hint_text: "Password"
+        password: True
+        icon_right: 'eye-off'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .35}
+        write_tab: False
+
+    MDTextField:
+        id: role
+        hint_text: "Role"
+        icon_right: 'email'
+        font_size: "20dp"
+        size_hint_x: .85
+        pos_hint: {'center_x': .5, 'center_y': .25}
+        write_tab: False
+
+
+    BoxLayout:
+        size_hint: .85, None
+        height: "30dp"
+        pos_hint: {'center_x': .5, 'center_y': .15}
+        spacing: "5dp"
+
+        MDCheckbox:
+            id: cb
+            size_hint: None, None
+            width: "30dp"
+            height: "30dp"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_press:
+                password.password = False if password.password == True else True
+
+        MDLabel:
+            text: "[ref=Show Password]Show Password[/ref]"
+            markup: True
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_ref_press:
+                cb.active = False if cb.active == True else True
+                password.password = False if password.password == True else True
+
+    BoxLayout:
+        size_hint: .6, None
+        height: "30dp"
+        pos_hint: {'center_x': .5, 'center_y': .05}
+        spacing: "15dp"
+        MDFlatButton:
+            text: "REGISTER"
+            size_hint_x: 1
+            md_bg_color: "#FF5623"
+            on_release:
+                root.register_user()
+        MDFlatButton:
+            text: "Back to Login"
+            size_hint_x: 1
+            md_bg_color: "#FF5623"
+            on_release:
+                app.root.current = "login"
+                root.manager.transition.direction = "right"
+
+
+<TrainerNavWindow>:
+    name: "trainer_nav_window"
+    BoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 1
+            title: "Navigation"
+            padding: 30
+
+        MDBottomNavigation:
+            #color stuff
+            panel_color: 22/255, 26/255, 28/255,1
+            MDBottomNavigationItem:
+                name: "screen 1"
+                text: "Trainees"
+                icon: "android"
+                on_tab_release:
+                    root.populate_my_trainees()
+                MDLabel:
+                    text: "My Trainees List"
+                    font_size: "48dp"
+                    halign: "center"
+                    color: "#FF5623"
+                    pos_hint: {'center_y': .9}
+
+                BoxLayout:
+                    size_hint: 0.9, 0.8
+                    orientation: "vertical"
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+                    spacing: "15dp"
+
+
+                    MDScrollView:
+                        MDList:
+                            id: list_trainees
+            MDBottomNavigationItem:
+                name: "screen 2"
+                text: "Workouts"
+                icon: "apps"
+                on_tab_release:
+                    root.populate_workouts()
+
+                MDLabel:
+                    text: "Workouts List"
+                    font_size: "48dp"
+                    halign: "center"
+                    color: "#FF5623"
+                    pos_hint: {'center_y': .9}
+
+                BoxLayout:
+                    size_hint: 0.9, 0.8
+                    orientation: "vertical"
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+                    spacing: "15dp"
+
+                    BoxLayout:
+                        size_hint: 1, None
+                        orientation: "horizontal"
+                        spacing: 20
+
+                        Button:
+                            text: "All"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("All Categories")
+                        Button:
+                            text: "Aerobic"
+                            background_color: "#FF5623" #"#7202db"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Aerobic")
+                        Button:
+                            text: "Strength"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Strength")
+                        Button:
+                            text: "Mindfulness"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Mindfulness")
+                        Button:
+                            text: "Endurance"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Endurance")
+                        Button:
+                            text: "Flexibility"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Flexibility")
+
+
+                    MDScrollView:
+                        MDList:
+                            id: list_workouts
+
+            MDBottomNavigationItem:
+                name: "screen 3"
+                text: "Add workout"
+                icon: "playlist-plus"
+
+                workout_name: workout_name
+                workout_duration: workout_duration
+                workout_difficulty: workout_difficulty
+                workout_category: workout_category
+
+                MDLabel:
+                    text: "Create new Workout"
+                    font_size: "48dp"
+                    halign: "center"
+                    color: "#FF5623"
+                    pos_hint: {'center_y': .8}
+
+                MDTextField:
+                    id: workout_name
+                    hint_text: "Name"
+                    font_size: "20dp"
+                    size_hint_x: .85
+                    pos_hint: {'center_x': .5, 'center_y': .65}
+                    write_tab: False
+
+                MDTextField:
+                    id: workout_duration
+                    hint_text: "Duration(min)"
+                    font_size: "20dp"
+                    size_hint_x: .85
+                    pos_hint: {'center_x': .5, 'center_y': .55}
+                    write_tab: False
+
+                MDTextField:
+                    id: workout_difficulty
+                    hint_text: "Difficulty"
+                    font_size: "20dp"
+                    size_hint_x: .85
+                    pos_hint: {'center_x': .5, 'center_y': .45}
+                    write_tab: False
+
+                MDTextField:
+                    id: workout_category
+                    hint_text: "Category"
+                    font_size: "20dp"
+                    size_hint_x: .85
+                    pos_hint: {'center_x': .5, 'center_y': .35}
+                    write_tab: False
+
+                BoxLayout:
+                    size_hint: .3, None
+                    height: "30dp"
+                    pos_hint: {'center_x': .5, 'center_y': .05}
+                    spacing: "15dp"
+                    MDFlatButton:
+                        text: "CREATE"
+                        size_hint_x: 1
+                        md_bg_color: "#FF5623"
+                        on_release:
+                            root.create_workout()
+                            root.clear_text_fields()
+
+            MDBottomNavigationItem:
+                name: "screen 4"
+                text: "My profile"
+                icon: "account-circle"
+                on_tab_release:
+                    root.fetch_profile_info()
+
+
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: "15dp"
+                    spacing: "15dp"
+                    MDLabel:
+                        text: "My profile"
+                        font_size: "48dp"
+                        halign: "center"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .8}
+                    MDLabel:
+                        id:my_profile_first_name
+                        text: f"First name: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .65}
+                    MDLabel:
+                        id:my_profile_last_name
+                        text: "Last name: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .5}
+                    MDLabel:
+                        id:my_profile_rating
+                        text: "Rating: *** to be implemented ***"
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .35}
+                    MDLabel:
+                        id:my_profile_creation_date
+                        text: "Trainer since: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .2}
+                    BoxLayout:
+                        orientation: "horizontal"
+                        padding: "15dp"
+                        spacing: "15dp"
+                        MDLabel:
+                        MDLabel:
+                        MDLabel:
+                        MDFlatButton:
+                            text: "Logout"
+                            size_hint_x: 1
+                            md_bg_color: "#FF5623"
+                            on_release:
+                                app.root.current = "login"
+                                root.manager.transition.direction = "right"
+<TraineeNavWindow>:
+    name: "trainee_nav_window"
+    BoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 1
+            title: "Navigation"
+            padding: 30
+
+        MDBottomNavigation:
+            #color stuff
+            panel_color: 22/255, 26/255, 28/255,1
+            MDBottomNavigationItem:
+                name: "screen 5"
+                text: "Trainers"
+                icon: "android"
+                on_tab_release:
+                    root.populate_trainers()
+
+                MDLabel:
+                    text: "Trainers List"
+                    font_size: "48dp"
+                    halign: "center"
+                    color: "#FF5623"
+                    pos_hint: {'center_y': .9}
+
+                BoxLayout:
+                    size_hint: 0.9, 0.8
+                    orientation: "vertical"
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+                    spacing: "15dp"
+
+
+                    MDScrollView:
+                        MDList:
+                            id: list_trainers
+            MDBottomNavigationItem:
+                name: "screen 6"
+                text: "Workouts"
+                icon: "apps"
+                on_tab_release:
+                    root.populate_workouts()
+
+                MDLabel:
+                    text: "Workouts List"
+                    font_size: "48dp"
+                    halign: "center"
+                    color: "#FF5623"
+                    pos_hint: {'center_y': .9}
+
+                BoxLayout:
+                    size_hint: 0.9, 0.8
+                    orientation: "vertical"
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+                    spacing: "15dp"
+
+                    BoxLayout:
+                        size_hint: 1, None
+                        orientation: "horizontal"
+                        spacing: 20
+
+                        Button:
+                            text: "All"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("All Categories")
+                        Button:
+                            text: "Aerobic"
+                            background_color: "#FF5623" #"#7202db"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Aerobic")
+                        Button:
+                            text: "Strength"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Strength")
+                        Button:
+                            text: "Mindfulness"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Mindfulness")
+                        Button:
+                            text: "Endurance"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Endurance")
+                        Button:
+                            text: "Flexibility"
+                            background_color: "#FF5623"
+                            size_hint: None, None
+                            height: 50
+                            on_press: root.filter_workouts("Flexibility")
+
+
+                    MDScrollView:
+                        MDList:
+                            id: list_workouts_trainee
+
+            MDBottomNavigationItem:
+                name: "screen 7"
+                text: "My profile"
+                icon: "account-circle"
+                on_tab_release:
+                    root.fetch_profile_info()
+
+
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: "15dp"
+                    spacing: "15dp"
+                    MDLabel:
+                        text: "My profile"
+                        font_size: "48dp"
+                        halign: "center"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .8}
+                    MDLabel:
+                        id:my_profile_first_name
+                        text: f"First name: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .65}
+                    MDLabel:
+                        id:my_profile_last_name
+                        text: "Last name: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .5}
+                    MDLabel:
+                        id:my_current_trainer
+                        text: "Current trainer: *** to be implemented ***"
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .35}
+                    MDLabel:
+                        id:my_profile_creation_date
+                        text: "Trainee since: "
+                        font_size: "32dp"
+                        color: "#FF5623"
+                        pos_hint: {'center_y': .2}
+                    BoxLayout:
+                        orientation: "horizontal"
+                        padding: "15dp"
+                        spacing: "15dp"
+                        MDLabel:
+                        MDLabel:
+                        MDLabel:
+                        MDFlatButton:
+                            text: "Logout"
+                            size_hint_x: 1
+                            md_bg_color: "#FF5623"
+                            on_release:
+                                app.root.current = "login"
+                                root.manager.transition.direction = "right"
+
